@@ -1,0 +1,2 @@
+# wiki
+hexo wiki
