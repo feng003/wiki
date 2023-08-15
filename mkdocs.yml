@@ -1,0 +1,15 @@
+site_name: 我的文档
+repo_url: https://github.com/feng003/
+repo_name: Github
+
+nav:
+  - 首页: index.md
+  - Kali: kali/index.md
+  - MySql: mysql/index.md
+  - Python: python/index.md
+
+theme: 
+  name: readthedocs
+  highlightjs: true
+  locale: zh_CN
+
