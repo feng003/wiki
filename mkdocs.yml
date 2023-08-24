@@ -6,6 +6,7 @@ nav:
   - 首页: index.md
   - Kali: kali/index.md
   - MySql: mysql/index.md
+  - Redis: redis/index.md
   - Python: python/index.md
 
 theme: 

@@ -3,7 +3,140 @@
     AVG()属于聚合函数,它接受的参数可以是字段名,也可以是返回数字的表达式。
     类似的 MIN(),MAX(),SUM() 都是可以的， 特殊的count用法：
     count(age > 20 or null) 如果是 count(age > 20) = count(*) 
-    对于非聚合函数如ABS(), UPPER()等,就只能接受字段作为参数:
+    对于非聚合函数如ABS(), UPPER()等,就只能接受字段作为参数.
+
+    // 窗口函数
+    select score, ROW_NUMBER() OVER(order by score desc) AS 'rank' from Scores;
+    SELECT S.score, DENSE_RANK() OVER (PARTITION BY id ORDER BY S.score DESC ) AS 'rank' FROM Scores S;
+
+    // 字符串操作函数
+    SUBSTRING(column_name, start, length)
+    CONCAT(string1, string2, ...)
+    select user_id, CONCAT(UPPER(substring(name,1,1)), LOWER(substring(name,2)) ) as name from Users order by user_id
+
+    // 模糊匹配 邮箱 (^[a-zA-Z][a-zA-Z0-9_.-]*\\@leetcode\\.com$)
+    SELECT * FROM Patients WHERE conditions REGEXP '\\bDIAB1.*';
+    select * from Patients where conditions like 'DIAB1%' or conditions like '% DIAB1%';
+    select * from Users where mail REGEXP '^[a-zA-Z][a-zA-Z0-9_.-]*\\@leetcode\\.com$'
+
+    // GROUP_CONCAT() / count( distinct() )
+    select sell_date, count( distinct(product) ) as num_sold, GROUP_CONCAT(DISTINCT product ORDER BY product SEPARATOR ',') as products from Activities group by sell_date ORDER BY  sell_date ASC;
+
+<!-- ************************************************************************************************* -->
+
+### 180. 连续出现的数字
+
+    ### 按照ID升序排序下，统计num中连续重复出现3次及以上的数字
+
+    Logs =
+    | id | num |
+    | -- | --- |
+    | 1  | 1   |
+    | 2  | 1   |
+    | 3  | 1   |
+    | 4  | 2   |
+    | 5  | 1   |
+    | 6  | 2   |
+    | 7  | 2   |
+
+    ### 答案 三个表之间的关系
+    SELECT DISTINCT l1.Num AS ConsecutiveNums FROM Logs l1,Logs l2, Logs l3 
+    WHERE l1.Id = l2.Id - 1 AND l2.Id = l3.Id - 1 AND l1.Num = l2.Num AND l2.Num = l3.Num ;
+
+    ### 答案 
+    ### 判断是否连续，若考虑id不连续的情况，光凭题目中的id就不够用了，我们可利用row_num函数按照id 升序对其进行连续排序，row_number() over(order by id) 记为rank1
+    ### 统计num的重复数据，自然需要对num进行分组统计，同样对其进行排名 row_number() over(partition by Num order by Id) 记为rank2
+
+    SELECT DISTINCT Num ConsecutiveNums FROM(SELECT *, ROW_NUMBER() OVER (PARTITION BY Num ORDER BY Id) rownum,
+      ROW_NUMBER() OVER (ORDER BY Id) id2 FROM LOGS ) t
+    GROUP BY (id2-rownum) ,Num HAVING COUNT(*)>=3 
+
+### 550. 游戏玩法分析 IV
+
+    ### 计算从首次登录日期开始至少连续两天登录的玩家的数量，然后除以玩家总数。
+    Activity =
+    | player_id | device_id | event_date | games_played |
+    | --------- | --------- | ---------- | ------------ |
+    | 1         | 2         | 2016-03-01 | 5            |
+    | 1         | 2         | 2016-03-02 | 6            |
+    | 2         | 3         | 2017-06-25 | 1            |
+    | 3         | 1         | 2016-03-02 | 0            |
+    | 3         | 4         | 2018-07-03 | 5            |
+
+    ### 思路1
+    先过滤出每个用户的首次登陆日期，然后左关联，筛选次日存在的记录的比例
+
+    ### 答案
+    select round(avg(a.event_date is not null), 2) fraction from 
+    (select player_id, min(event_date) as login from activity group by player_id ) as p left join 
+    activity as a on p.player_id=a.player_id and datediff(a.event_date, p.login)=1
+
+    ### 答案2
+    select round( 
+        ((select count(player_id) from (select player_id, datediff(event_date, min(event_date) over(partition by player_id)) as diff from activity ) as tmp where diff = 1 ) / (select count(distinct player_id) from activity)) ,2) as fraction;
+
+
+### 585. 2016年的投资
+
+    ### 报告 2016 年 (tiv_2016) 所有满足下述条件的投保人的投保金额之和：
+        在 2015 年的投保额 (tiv_2015) 至少跟一个其他投保人在 2015 年的投保额相同。
+        所在的城市必须与其他投保人都不同（也就是说 (lat, lon) 不能跟其他任何一个投保人完全相同）。
+
+    Insurance =
+    | pid | tiv_2015 | tiv_2016 | lat | lon |
+    | --- | -------- | -------- | --- | --- |
+    | 1   | 10       | 5        | 10  | 10  |
+    | 2   | 20       | 20       | 20  | 20  |
+    | 3   | 10       | 30       | 20  | 20  |
+    | 4   | 10       | 40       | 40  | 40  |
+
+    ### 思路1
+    select round(sum(r1.tiv_2016),2) as tiv_2016 from 
+    (select pid,tiv_2016 from Insurance where tiv_2015 in (select tiv_2015 from Insurance group by tiv_2015 having count(1) > 1) ) as r1 join 
+    ( select pid,tiv_2016 from Insurance group by lat,lon having count(1) = 1 ) as r2 on r1.pid = r2.pid
+
+    ### 思路2
+    select round(sum(tiv_2016),2) as tiv_2016 from Insurance 
+    where tiv_2015 in ( select tiv_2015 from Insurance group by tiv_2015 having count(1) > 1 ) 
+    and concat(lat, lon) in (select concat(lat, lon) from Insurance group by lat,lon having count(1) = 1 )
+
+### 1164. 指定日期的产品价格 全集 JOIN 子集 缺失的值为null
+
+    ### 查找在 2019-08-16 时全部产品的价格，假设所有产品在修改前的价格都是 10 
+
+    Product = 
+    | product_id | new_price | change_date |
+    | ---------- | --------- | ----------- |
+    | 1          | 20        | 2019-08-14  |
+    | 2          | 50        | 2019-08-14  |
+    | 1          | 30        | 2019-08-15  |
+    | 1          | 35        | 2019-08-16  |
+    | 2          | 65        | 2019-08-17  |
+    | 3          | 20        | 2019-08-18  |
+
+    ### 思路1
+    select product_id,new_price as price from Products where (product_id,change_date) in (select product_id, max(change_date) from Products where change_date <= "2019-08-16" group by product_id)
+    union
+    (select product_id, if(2>1, 10, 10) as price from Products where change_date >'2019-08-16' group by product_id having count(1) < 2 )
+
+    ### 思路2
+    select product_id, price from ( select product_id, new_price as price, dense_rank() over(partition by product_id order by change_date desc) as rnk from Products where change_date <= '2019-08-16' ) t where rnk = 1
+
+    ### 答案1 全集 JOIN 子集 缺失的值为null
+
+    select p1.product_id, ifnull(p2.new_price, 10) as price from
+     (select distinct product_id from Products ) as p1  left join 
+     (select product_id,new_price from Products where (product_id,change_date) in (select product_id, max(change_date) 
+     from Products where change_date <= "2019-08-16" group by product_id) ) as p2
+     on p1.product_id=p2.product_id
+
+     ### 答案2 COALESCE(expr1, expr2, ..., default_value) 
+     ### COALESCE函数是用于从一组表达式中返回第一个非空的值的非常有用的函数，特别适用于处理多个列或表达式的情况
+     select distinct p1.product_id, coalesce(( select p2.new_price from Products as p2 where p2.change_date <= '2019-08-16' and p1.product_id=p2.product_id order by p2.change_date desc limit 1 )  ,10) as price 
+     from Products as p1
+
+
+<!-- ************************************************************************************************* -->
 
 ### 181. 超过经理收入的员工
 
@@ -85,6 +218,46 @@
     SELECT w1.Id from Weather as w1, Weather as w2 
     WHERE TIMESTAMPDIFF(DAY, w2.RecordDate, w1.RecordDate) = 1 AND w1.Temperature > w2.Temperature
 
+### 610. 判断三角形  case when xx then x else x end
+
+    | x  | y  | z  |
+    | -- | -- | -- |
+    | 13 | 15 | 30 |
+    | 10 | 20 | 15 |
+
+    ### 答案
+    select x,y,z, (case when x+y >z and x+z >y and y+z >x THEN 'Yes' ELSE 'No' END) as 'triangle' from triangle;
+
+### 626. 换座位  LEAD(), LAG() / IF()
+
+    Seat =
+    | id | student |
+    | -- | ------- |
+    | 1  | Abbot   |
+    | 2  | Doris   |
+    | 3  | Emerson |
+    | 4  | Green   |
+    | 5  | Jeames  |
+    ### 交换每两个连续的学生的座位号。如果学生的数量是奇数，则最后一个学生的id不交换。
+
+    ### LEAD(column_name, offset, default_value) OVER (PARTITION BY partition_expression ORDER BY sort_expression)  获取当前行后面的指定行数的值
+    ### LAG(column_name, offset, default_value) OVER (PARTITION BY partition_expression ORDER BY sort_expression)  获取当前行前面的指定行数的值
+
+    SELECT id, IF(id & 1, LEAD(student,1, student) OVER(), LAG(student, 1) OVER() ) AS student
+    FROM Seat
+
+    ### 答案  IF()
+    select if( id % 2 = 0, id-1, if( id = (select max(id) from Seat ), id, id+1) ) as id, student from Seat order by id;
+
+    ### 答案
+    select a.id as id,ifnull(b.student,a.student) as student from Seat as a left join 
+    ( select * from Seat where mod(id,2) = 0 ) as b on (a.id+1) = b.id where mod(a.id,2) = 1
+    union
+    select c.id as id,d.student as student from Seat as c left join 
+    ( select * from Seat where mod(id,2) = 1 ) as d on (c.id-1) = d.id where mod(c.id,2) = 0
+    order by id asc;
+
+
 ### 1084. 销售分析III count( sale_date between '2019-01-01' and '2019-03-31' or null ) 
 
     | product_id | product_name | unit_price |
@@ -128,6 +301,67 @@
     from Delivery where ( customer_id, order_date) in 
     ( select customer_id,MIN(order_date) from Delivery group by customer_id )
 
+### 1193. 每月交易 I  IF / SUM / DATE_FORMAT(date, format)
+
+    ### 查询来查找每个月和每个国家/地区的事务数及其总金额、已批准的事务数及其总金额。
+    Transactions =
+    | id  | country | state    | amount | trans_date |
+    | --- | ------- | -------- | ------ | ---------- |
+    | 121 | US      | approved | 1000   | 2018-12-18 |
+    | 122 | US      | declined | 2000   | 2018-12-19 |
+    | 123 | US      | approved | 2000   | 2019-01-01 |
+    | 124 | DE      | approved | 2000   | 2019-01-07 |
+
+    ### 错误思路  if(state='approved', +amount, 0) 
+    select DATE_FORMAT(trans_date, '%Y-%m') AS month, country ,COUNT(1) as trans_COUNT, SUM(state='approved') as approved_COUNT, SUM(amount) as trans_total_amount, if(state='approved', +amount, 0)  as approved_total_amount from Transactions group by month,country;
+
+    ### 答案   SUM(if(state='approved', amount, 0)) / SUM(state='approved')
+    select DATE_FORMAT(trans_date, '%Y-%m') AS month, country ,COUNT(1) as trans_COUNT, SUM(state='approved') as approved_COUNT, SUM(amount) as trans_total_amount, SUM(if(state='approved', amount, 0))  as approved_total_amount from Transactions group by month,country;
+
+### 1321. 餐馆营业额变化增长
+
+    ### 计算以 7 天（某日期 + 该日期前的 6 天）为一个时间段的顾客消费平均值
+    Customer =
+    | customer_id | name    | visited_on | amount |
+    | ----------- | ------- | ---------- | ------ |
+    | 1           | Jhon    | 2019-01-01 | 100    |
+    | 2           | Daniel  | 2019-01-02 | 110    |
+    | 3           | Jade    | 2019-01-03 | 120    |
+    | 4           | Khaled  | 2019-01-04 | 130    |
+    | 5           | Winston | 2019-01-05 | 110    |
+    | 6           | Elvis   | 2019-01-06 | 140    |
+    | 7           | Anna    | 2019-01-07 | 150    |
+    | 8           | Maria   | 2019-01-08 | 80     |
+    | 9           | Jaze    | 2019-01-09 | 110    |
+    | 1           | Jhon    | 2019-01-10 | 130    |
+    | 3           | Jade    | 2019-01-10 | 150    |
+    
+
+### 1789. 员工的直属部门  UNION / IF()
+
+    ### 查出员工所属的直属部门
+
+    Employee =
+    | employee_id | department_id | primary_flag |
+    | ----------- | ------------- | ------------ |
+    | 1           | 1             | N            |
+    | 2           | 1             | Y            |
+    | 2           | 2             | N            |
+    | 3           | 3             | N            |
+    | 4           | 2             | N            |
+    | 4           | 3             | Y            |
+    | 4           | 4             | N            |
+
+    ### 答案 union
+    select employee_id, department_id from Employee  group by employee_id having count(department_id) = 1
+    union 
+    select employee_id, department_id from Employee where primary_flag = 'Y';
+
+    ### 答案 if(condition, Y, N)
+    select e1.employee_id,if(count(e1.department_id) < 2,e1.department_id,(select department_id from Employee e2 
+    where e2.employee_id = e1.employee_id and e2.primary_flag = 'Y')) department_id
+    from Employee e1 group by e1.employee_id having department_id is not null;
+
 ### 1934. 确认率  AVG() IFNULL
 
     Signups =
@@ -157,20 +391,3 @@
     ### 答案  AVG(c.action='confirmed')
     SELECT s.user_id, ROUND(IFNULL(AVG(c.action='confirmed'), 0), 2) AS confirmation_rate
     FROM Signups AS s LEFT JOIN Confirmations AS c ON s.user_id = c.user_id GROUP BY s.user_id
-
-### 1193. 每月交易 I  IF / SUM / DATE_FORMAT(date, format)
-
-    ### 查询来查找每个月和每个国家/地区的事务数及其总金额、已批准的事务数及其总金额。
-    Transactions =
-    | id  | country | state    | amount | trans_date |
-    | --- | ------- | -------- | ------ | ---------- |
-    | 121 | US      | approved | 1000   | 2018-12-18 |
-    | 122 | US      | declined | 2000   | 2018-12-19 |
-    | 123 | US      | approved | 2000   | 2019-01-01 |
-    | 124 | DE      | approved | 2000   | 2019-01-07 |
-
-    ### 错误思路  if(state='approved', +amount, 0) 
-    select DATE_FORMAT(trans_date, '%Y-%m') AS month, country ,COUNT(1) as trans_COUNT, SUM(state='approved') as approved_COUNT, SUM(amount) as trans_total_amount, if(state='approved', +amount, 0)  as approved_total_amount from Transactions group by month,country;
-
-    ### 答案   SUM(if(state='approved', amount, 0)) / SUM(state='approved')
-    select DATE_FORMAT(trans_date, '%Y-%m') AS month, country ,COUNT(1) as trans_COUNT, SUM(state='approved') as approved_COUNT, SUM(amount) as trans_total_amount, SUM(if(state='approved', amount, 0))  as approved_total_amount from Transactions group by month,country;
