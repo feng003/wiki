@@ -1,4 +1,5 @@
 site_name: 我的文档
+site_url: http://feng003.github.io/
 repo_url: https://github.com/feng003/wiki/
 repo_name: Github
 
@@ -10,7 +11,7 @@ nav:
   - Python: python/index.md
 
 theme: 
-  name: readthedocs
+  name: material
   highlightjs: true
   locale: zh_CN
 
