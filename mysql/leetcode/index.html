@@ -511,7 +511,8 @@ SELECT DISTINCT l1.Num AS ConsecutiveNums FROM Logs l1,Logs l2, Logs l3
 WHERE l1.Id = l2.Id - 1 AND l2.Id = l3.Id - 1 AND l1.Num = l2.Num AND l2.Num = l3.Num ;
 
 ### 答案 
-### 判断是否连续，若考虑id不连续的情况，光凭题目中的id就不够用了，我们可利用row_num函数按照id 升序对其进行连续排序，row_number() over(order by id) 记为rank1
+### 判断是否连续，若考虑id不连续的情况，光凭题目中的id就不够用了，我们可利用row_num函数按照id 升序对其进行连续排序，
+row_number() over(order by id) 记为rank1
 ### 统计num的重复数据，自然需要对num进行分组统计，同样对其进行排名 row_number() over(partition by Num order by Id) 记为rank2
 
 SELECT DISTINCT Num ConsecutiveNums FROM(SELECT *, ROW_NUMBER() OVER (PARTITION BY Num ORDER BY Id) rownum,
@@ -538,8 +539,9 @@ SELECT round(avg(a.event_date is not null), 2) fraction from
 activity as a on p.player_id=a.player_id and datediff(a.event_date, p.login)=1
 
 ### 答案2
-SELECT round( 
-    ((SELECT count(player_id) from (SELECT player_id, datediff(event_date, min(event_date) over(partition by player_id)) as diff from activity ) as tmp where diff = 1 ) / (SELECT count(distinct player_id) from activity)) ,2) as fraction;
+SELECT round( ((SELECT count(player_id) from 
+(SELECT player_id, datediff(event_date, min(event_date) over(partition by player_id)) as diff from activity ) as tmp 
+where diff = 1 ) / (SELECT count(distinct player_id) from activity)) ,2) as fraction;
 </code></pre>
 <h3 id="585-2016">585. 2016年的投资</h3>
 <pre><code>### 报告 2016 年 (tiv_2016) 所有满足下述条件的投保人的投保金额之和：
