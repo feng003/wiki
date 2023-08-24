@@ -6,23 +6,28 @@
     对于非聚合函数如ABS(), UPPER()等,就只能接受字段作为参数.
 
     // 窗口函数
-    select score, ROW_NUMBER() OVER(order by score desc) AS 'rank' from Scores;
+    SELECT score, ROW_NUMBER() OVER(order by score desc) AS 'rank' from Scores;
+
     SELECT S.score, DENSE_RANK() OVER (PARTITION BY id ORDER BY S.score DESC ) AS 'rank' FROM Scores S;
 
     // 字符串操作函数
     SUBSTRING(column_name, start, length)
     CONCAT(string1, string2, ...)
-    select user_id, CONCAT(UPPER(substring(name,1,1)), LOWER(substring(name,2)) ) as name from Users order by user_id
+
+    SELECT user_id, CONCAT(UPPER(substring(name,1,1)), LOWER(substring(name,2)) ) as name 
+    from Users order by user_id
 
     // 模糊匹配 邮箱 (^[a-zA-Z][a-zA-Z0-9_.-]*\\@leetcode\\.com$)
     SELECT * FROM Patients WHERE conditions REGEXP '\\bDIAB1.*';
-    select * from Patients where conditions like 'DIAB1%' or conditions like '% DIAB1%';
-    select * from Users where mail REGEXP '^[a-zA-Z][a-zA-Z0-9_.-]*\\@leetcode\\.com$'
+    SELECT * from Patients where conditions like 'DIAB1%' or conditions like '% DIAB1%';
+    SELECT * from Users where mail REGEXP '^[a-zA-Z][a-zA-Z0-9_.-]*\\@leetcode\\.com$'
 
     // GROUP_CONCAT() / count( distinct() )
-    select sell_date, count( distinct(product) ) as num_sold, GROUP_CONCAT(DISTINCT product ORDER BY product SEPARATOR ',') as products from Activities group by sell_date ORDER BY  sell_date ASC;
+    SELECT sell_date, count( distinct(product) ) as num_sold, 
+    GROUP_CONCAT(DISTINCT product ORDER BY product SEPARATOR ',') as products 
+    from Activities group by sell_date ORDER BY  sell_date ASC;
 
-<!-- ************************************************************************************************* -->
+---
 
 ### 180. 连续出现的数字
 
@@ -44,7 +49,8 @@
     WHERE l1.Id = l2.Id - 1 AND l2.Id = l3.Id - 1 AND l1.Num = l2.Num AND l2.Num = l3.Num ;
 
     ### 答案 
-    ### 判断是否连续，若考虑id不连续的情况，光凭题目中的id就不够用了，我们可利用row_num函数按照id 升序对其进行连续排序，row_number() over(order by id) 记为rank1
+    ### 判断是否连续，若考虑id不连续的情况，光凭题目中的id就不够用了，我们可利用row_num函数按照id 升序对其进行连续排序，
+    row_number() over(order by id) 记为rank1
     ### 统计num的重复数据，自然需要对num进行分组统计，同样对其进行排名 row_number() over(partition by Num order by Id) 记为rank2
 
     SELECT DISTINCT Num ConsecutiveNums FROM(SELECT *, ROW_NUMBER() OVER (PARTITION BY Num ORDER BY Id) rownum,
@@ -67,13 +73,14 @@
     先过滤出每个用户的首次登陆日期，然后左关联，筛选次日存在的记录的比例
 
     ### 答案
-    select round(avg(a.event_date is not null), 2) fraction from 
-    (select player_id, min(event_date) as login from activity group by player_id ) as p left join 
+    SELECT round(avg(a.event_date is not null), 2) fraction from 
+    (SELECT player_id, min(event_date) as login from activity group by player_id ) as p left join 
     activity as a on p.player_id=a.player_id and datediff(a.event_date, p.login)=1
 
     ### 答案2
-    select round( 
-        ((select count(player_id) from (select player_id, datediff(event_date, min(event_date) over(partition by player_id)) as diff from activity ) as tmp where diff = 1 ) / (select count(distinct player_id) from activity)) ,2) as fraction;
+    SELECT round( ((SELECT count(player_id) from 
+    (SELECT player_id, datediff(event_date, min(event_date) over(partition by player_id)) as diff from activity ) as tmp 
+    where diff = 1 ) / (SELECT count(distinct player_id) from activity)) ,2) as fraction;
 
 
 ### 585. 2016年的投资
@@ -91,14 +98,14 @@
     | 4   | 10       | 40       | 40  | 40  |
 
     ### 思路1
-    select round(sum(r1.tiv_2016),2) as tiv_2016 from 
-    (select pid,tiv_2016 from Insurance where tiv_2015 in (select tiv_2015 from Insurance group by tiv_2015 having count(1) > 1) ) as r1 join 
-    ( select pid,tiv_2016 from Insurance group by lat,lon having count(1) = 1 ) as r2 on r1.pid = r2.pid
+    SELECT round(sum(r1.tiv_2016),2) as tiv_2016 from 
+    (SELECT pid,tiv_2016 from Insurance where tiv_2015 in (SELECT tiv_2015 from Insurance group by tiv_2015 having count(1) > 1) ) as r1 join 
+    ( SELECT pid,tiv_2016 from Insurance group by lat,lon having count(1) = 1 ) as r2 on r1.pid = r2.pid
 
     ### 思路2
-    select round(sum(tiv_2016),2) as tiv_2016 from Insurance 
-    where tiv_2015 in ( select tiv_2015 from Insurance group by tiv_2015 having count(1) > 1 ) 
-    and concat(lat, lon) in (select concat(lat, lon) from Insurance group by lat,lon having count(1) = 1 )
+    SELECT round(sum(tiv_2016),2) as tiv_2016 from Insurance 
+    where tiv_2015 in ( SELECT tiv_2015 from Insurance group by tiv_2015 having count(1) > 1 ) 
+    and concat(lat, lon) in (SELECT concat(lat, lon) from Insurance group by lat,lon having count(1) = 1 )
 
 ### 1164. 指定日期的产品价格 全集 JOIN 子集 缺失的值为null
 
@@ -115,28 +122,27 @@
     | 3          | 20        | 2019-08-18  |
 
     ### 思路1
-    select product_id,new_price as price from Products where (product_id,change_date) in (select product_id, max(change_date) from Products where change_date <= "2019-08-16" group by product_id)
+    SELECT product_id,new_price as price from Products where (product_id,change_date) in (SELECT product_id, max(change_date) from Products where change_date <= "2019-08-16" group by product_id)
     union
-    (select product_id, if(2>1, 10, 10) as price from Products where change_date >'2019-08-16' group by product_id having count(1) < 2 )
+    (SELECT product_id, if(2>1, 10, 10) as price from Products where change_date >'2019-08-16' group by product_id having count(1) < 2 )
 
     ### 思路2
-    select product_id, price from ( select product_id, new_price as price, dense_rank() over(partition by product_id order by change_date desc) as rnk from Products where change_date <= '2019-08-16' ) t where rnk = 1
+    SELECT product_id, price from ( SELECT product_id, new_price as price, dense_rank() over(partition by product_id order by change_date desc) as rnk from Products where change_date <= '2019-08-16' ) t where rnk = 1
 
     ### 答案1 全集 JOIN 子集 缺失的值为null
 
-    select p1.product_id, ifnull(p2.new_price, 10) as price from
-     (select distinct product_id from Products ) as p1  left join 
-     (select product_id,new_price from Products where (product_id,change_date) in (select product_id, max(change_date) 
+    SELECT p1.product_id, ifnull(p2.new_price, 10) as price from
+     (SELECT distinct product_id from Products ) as p1  left join 
+     (SELECT product_id,new_price from Products where (product_id,change_date) in (SELECT product_id, max(change_date) 
      from Products where change_date <= "2019-08-16" group by product_id) ) as p2
      on p1.product_id=p2.product_id
 
      ### 答案2 COALESCE(expr1, expr2, ..., default_value) 
      ### COALESCE函数是用于从一组表达式中返回第一个非空的值的非常有用的函数，特别适用于处理多个列或表达式的情况
-     select distinct p1.product_id, coalesce(( select p2.new_price from Products as p2 where p2.change_date <= '2019-08-16' and p1.product_id=p2.product_id order by p2.change_date desc limit 1 )  ,10) as price 
+     SELECT distinct p1.product_id, coalesce(( SELECT p2.new_price from Products as p2 where p2.change_date <= '2019-08-16' and p1.product_id=p2.product_id order by p2.change_date desc limit 1 )  ,10) as price 
      from Products as p1
 
-
-<!-- ************************************************************************************************* -->
+---
 
 ### 181. 超过经理收入的员工
 
@@ -226,7 +232,7 @@
     | 10 | 20 | 15 |
 
     ### 答案
-    select x,y,z, (case when x+y >z and x+z >y and y+z >x THEN 'Yes' ELSE 'No' END) as 'triangle' from triangle;
+    SELECT x,y,z, (case when x+y >z and x+z >y and y+z >x THEN 'Yes' ELSE 'No' END) as 'triangle' from triangle;
 
 ### 626. 换座位  LEAD(), LAG() / IF()
 
@@ -247,14 +253,14 @@
     FROM Seat
 
     ### 答案  IF()
-    select if( id % 2 = 0, id-1, if( id = (select max(id) from Seat ), id, id+1) ) as id, student from Seat order by id;
+    SELECT if( id % 2 = 0, id-1, if( id = (SELECT max(id) from Seat ), id, id+1) ) as id, student from Seat order by id;
 
     ### 答案
-    select a.id as id,ifnull(b.student,a.student) as student from Seat as a left join 
-    ( select * from Seat where mod(id,2) = 0 ) as b on (a.id+1) = b.id where mod(a.id,2) = 1
+    SELECT a.id as id,ifnull(b.student,a.student) as student from Seat as a left join 
+    ( SELECT * from Seat where mod(id,2) = 0 ) as b on (a.id+1) = b.id where mod(a.id,2) = 1
     union
-    select c.id as id,d.student as student from Seat as c left join 
-    ( select * from Seat where mod(id,2) = 1 ) as d on (c.id-1) = d.id where mod(c.id,2) = 0
+    SELECT c.id as id,d.student as student from Seat as c left join 
+    ( SELECT * from Seat where mod(id,2) = 1 ) as d on (c.id-1) = d.id where mod(c.id,2) = 0
     order by id asc;
 
 
@@ -269,15 +275,15 @@
     ## 所有售出日期都在这个时间内 = 在这个时间内售出的商品数量等于总商品数量
 
     ###答案  count( sale_date between '2019-01-01' and '2019-03-31' or null ) 
-    select p.product_id, p.product_name from Sales as s left join Product as p on p.product_id=s.product_id 
+    SELECT p.product_id, p.product_name from Sales as s left join Product as p on p.product_id=s.product_id 
     group by product_id
     having count( sale_date between '2019-01-01' and '2019-03-31' or null ) = count(*)
     <!-- having SUM(s.sale_date BETWEEN '2019-01-01' AND '2019-03-31') = COUNT(*) -->
 
     ### 补集的思想：NOT IN
-    select product_id, product_name from product  where product_id NOT IN 
-    (select s.product_id from sales s where sale_date < '2019-01-01' or sale_date > '2019-03-31' )
-    and product_id in ( select s.product_id from sales s )
+    SELECT product_id, product_name from product  where product_id NOT IN 
+    (SELECT s.product_id from sales s where sale_date < '2019-01-01' or sale_date > '2019-03-31' )
+    and product_id in ( SELECT s.product_id from sales s )
 
 ### 1174. 即时食物配送 II   (x, x) in (x, x) / SUM(x = x)
 
@@ -297,9 +303,9 @@
     | 7           | 4           | 2019-08-09 | 2019-08-09                  |
 
     ###答案 (x, x) in (x, x)
-    select round( SUM(order_date = customer_pref_delivery_date) /COUNT(1) *100 , 2) as immediate_percentage 
+    SELECT round( SUM(order_date = customer_pref_delivery_date) /COUNT(1) *100 , 2) as immediate_percentage 
     from Delivery where ( customer_id, order_date) in 
-    ( select customer_id,MIN(order_date) from Delivery group by customer_id )
+    ( SELECT customer_id,MIN(order_date) from Delivery group by customer_id )
 
 ### 1193. 每月交易 I  IF / SUM / DATE_FORMAT(date, format)
 
@@ -313,10 +319,10 @@
     | 124 | DE      | approved | 2000   | 2019-01-07 |
 
     ### 错误思路  if(state='approved', +amount, 0) 
-    select DATE_FORMAT(trans_date, '%Y-%m') AS month, country ,COUNT(1) as trans_COUNT, SUM(state='approved') as approved_COUNT, SUM(amount) as trans_total_amount, if(state='approved', +amount, 0)  as approved_total_amount from Transactions group by month,country;
+    SELECT DATE_FORMAT(trans_date, '%Y-%m') AS month, country ,COUNT(1) as trans_COUNT, SUM(state='approved') as approved_COUNT, SUM(amount) as trans_total_amount, if(state='approved', +amount, 0)  as approved_total_amount from Transactions group by month,country;
 
     ### 答案   SUM(if(state='approved', amount, 0)) / SUM(state='approved')
-    select DATE_FORMAT(trans_date, '%Y-%m') AS month, country ,COUNT(1) as trans_COUNT, SUM(state='approved') as approved_COUNT, SUM(amount) as trans_total_amount, SUM(if(state='approved', amount, 0))  as approved_total_amount from Transactions group by month,country;
+    SELECT DATE_FORMAT(trans_date, '%Y-%m') AS month, country ,COUNT(1) as trans_COUNT, SUM(state='approved') as approved_COUNT, SUM(amount) as trans_total_amount, SUM(if(state='approved', amount, 0))  as approved_total_amount from Transactions group by month,country;
 
 ### 1321. 餐馆营业额变化增长
 
@@ -353,12 +359,12 @@
     | 4           | 4             | N            |
 
     ### 答案 union
-    select employee_id, department_id from Employee  group by employee_id having count(department_id) = 1
+    SELECT employee_id, department_id from Employee  group by employee_id having count(department_id) = 1
     union 
-    select employee_id, department_id from Employee where primary_flag = 'Y';
+    SELECT employee_id, department_id from Employee where primary_flag = 'Y';
 
     ### 答案 if(condition, Y, N)
-    select e1.employee_id,if(count(e1.department_id) < 2,e1.department_id,(select department_id from Employee e2 
+    SELECT e1.employee_id,if(count(e1.department_id) < 2,e1.department_id,(SELECT department_id from Employee e2 
     where e2.employee_id = e1.employee_id and e2.primary_flag = 'Y')) department_id
     from Employee e1 group by e1.employee_id having department_id is not null;
 
