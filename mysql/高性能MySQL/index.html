@@ -463,18 +463,57 @@
 
 <h2 id="schema">schema 设计与管理</h2>
 <h4 id="_1">选择优化的数据类型</h4>
+<pre><code>整数，实数，字符串，日期和时间，位压缩，JSON，标识符，特殊数据类型
+</code></pre>
 <h4 id="_2">设计中的陷阱</h4>
+<pre><code>太多的列，太多的联接，全能的枚举，变相的枚举，NULL不是虚拟值
+</code></pre>
 <h4 id="schema_1">schema管理</h4>
+<hr />
 <h2 id="_3">创建高性能索引</h2>
 <h4 id="_4">索引简介</h4>
 <h4 id="_5">索引策略</h4>
+<pre><code>前缀索引和索引的选择性，
+多列索引，
+选择合适的索引列顺序，
+聚簇索引，
+覆盖索引，
+使用索引扫描来做排序，冗余和重复索引，未使用的索引
+</code></pre>
 <h4 id="_6">维护索引和表</h4>
+<hr />
 <h2 id="_7">查询性能优化</h2>
 <h4 id="_8">慢查询基础</h4>
+<pre><code>优化数据访问
+是否向数据库请求了不需要的数据
+MySql是否在扫描额外的记录
+</code></pre>
 <h4 id="_9">重构查询的方式</h4>
+<pre><code>一个复杂查询还是多个简单查询
+切分查询
+分解联接查询
+</code></pre>
 <h4 id="_10">查询执行的基础</h4>
+<pre><code>MySql的客户端/服务器通信协议
+查询状态
+查询优化处理
+查询执行引擎
+将结果返回给客户端
+</code></pre>
 <h4 id="mysql">MYSQL查询优化器的局限性</h4>
+<pre><code>UNION的限制
+等值传递
+并行执行
+在同一个表中查询和更新
+</code></pre>
 <h4 id="_11">优化特定类型的查询</h4>
+<pre><code>优化COUNT()
+优化联接查询
+使用 where rollup 优化 group by
+优化 limit 和 offset 子句
+优化 sql_calc_found_rows
+优化 union查询
+</code></pre>
 
 
 
