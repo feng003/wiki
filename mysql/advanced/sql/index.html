@@ -8,25 +8,21 @@
       
       
       
-        <link rel="canonical" href="http://feng003.github.io/mysql/">
+        <link rel="canonical" href="http://feng003.github.io/mysql/advanced/sql/">
       
       
-        <link rel="prev" href="../kali/">
       
       
-        <link rel="next" href="../redis/">
-      
-      
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.2.3">
     
     
       
-        <title>MySql - 我的文档</title>
+        <title>mysql - 我的文档</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.0e669242.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.0e669242.min.css">
       
       
 
@@ -45,7 +41,7 @@
       
     
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -78,7 +74,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="我的文档" class="md-header__button md-logo" aria-label="我的文档" data-md-component="logo">
+    <a href="../../.." title="我的文档" class="md-header__button md-logo" aria-label="我的文档" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -98,7 +94,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              MySql
+              mysql
             
           </span>
         </div>
@@ -182,7 +178,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="我的文档" class="md-nav__button md-logo" aria-label="我的文档" data-md-component="logo">
+    <a href="../../.." title="我的文档" class="md-nav__button md-logo" aria-label="我的文档" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -211,7 +207,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -230,7 +226,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../kali/" class="md-nav__link">
+      <a href="../../../kali/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -247,16 +243,9 @@
       
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -265,7 +254,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -276,7 +264,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../redis/" class="md-nav__link">
+      <a href="../../../redis/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -295,7 +283,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../python/" class="md-nav__link">
+      <a href="../../../python/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -342,84 +330,76 @@
   
 
 
-  <h1>MySql</h1>
+  <h1>mysql</h1>
 
-<p><a href="leetcode/">leetcode</a></p>
-<pre><code>181. 超过经理收入的员工
-184. 部门工资最高的员工  DENSE_RANK()
-197. 上升的温度 datediff() / TIMESTAMPDIFF()
-610. 判断三角形  case when xx then x else x end
-626. 换座位  LEAD(), LAG() / IF()
-1084. 销售分析III count( sale_date between '2019-01-01' and '2019-03-31' or null ) 
-1174. 即时食物配送 II   (x, x) in (x, x) / SUM(x = x)
-1193. 每月交易 I  IF / SUM / DATE_FORMAT(date, format)
-1789. 员工的直属部门  UNION / IF()
+<pre><code>2015.12.14
+UPDATE `xs_order_amount` SET `order_sum`=`order_sum`+1 WHERE ( `username` IN ('143341','143176') );
+select * from user where username='149273';
+select * from w_social_info where user_id = 32;
+select * from wallet where username =  '149273';
 
-[180. 连续出现的数字](https://leetcode.cn/problems/consecutive-numbers)
-[550. 游戏玩法分析 IV](https://leetcode.cn/problems/game-play-analysis-iv/)
-[585. 2016年的投资](https://leetcode.cn/problems/investments-in-2016)
-[1164. 指定日期的产品价格](https://leetcode.cn/problems/product-price-at-a-given-date/)
-[1204. 最后一个能进入巴士的人](https://leetcode.cn/problems/last-person-to-fit-in-the-bus)
+2015.09.22
+select FROM_UNIXTIME(w_time,'%c-%e') as m,Sum(number)  as ct from money_log where account_type ="money" AND number &gt; 0 group by FROM_UNIXTIME(w_time,'%c-%e')  ORDER BY( w_time );
 
-[1280. 学生们参加各科测试的次数](https://leetcode.cn/problems/students-and-examinations/)
-[1321. 餐馆营业额变化增长](https://leetcode.cn/problems/restaurant-growth/)
-[1934. 确认率 AVG() IFNULL ](https://leetcode.cn/problems/confirmation-rate/)
+select FROM_UNIXTIME(w_time,'%c-%e') as m,Sum(number)  as ct from money_log where account_type ="money" AND number &lt; 0 group by FROM_UNIXTIME(w_time,'%c-%e') ORDER BY( w_time );
+
+select FROM_UNIXTIME(create_time,'%c') as m,COUNT(FROM_UNIXTIME(create_time,'%c'))  as ct from user group by FROM_UNIXTIME(create_time,'%c');
+
+select FROM_UNIXTIME(w_time,'%D') as m,Sum(number)  as ct from money_log where account_type ="money" AND number &lt; 0 group by FROM_UNIXTIME(w_time,'%D') ORDER BY( w_time );
+
+select * from xs_product_category where is_nav = "0" and is_index= '0';
+
+select *  from xs_product_category where parent_id in  (select id from xs_product_category where parent_id in (8,11,12,13,14,15,16,1029))
+
+select * FROM wallet where ad_money &gt;0;
+
+update wallet set money = money+ad_money where ad_money &gt; 0;
+
+-- 数据查询 之后  数据导入
+select id,username from trunk.user where id = 20;
+
+insert into test.weixinuser (id,name)  select id,username from trunk.user;
+
+select ws.weixin_openid from trunk.w_social_info as ws LEFT JOIN test.weixinuser as wx ON wx.id = ws.user_id;
+
+insert into test.weixinuser (openid)  select ws.weixin_openid from trunk.w_social_info as ws LEFT JOIN test.weixinuser as wx ON wx.id = ws.user_id;
+
+Other
+$url = "http://".CONFIG('web_address')."/".U('Article/index',array('token' =&gt; $this-&gt;token,'wecha_id'=&gt;$this-&gt;data['FromUserName'],'id'=&gt;$infot['id']));
+
+-- SELECT SUM(number_total * price_total) AS tp_Sum FROM `xs_order` WHERE ( `userid` = 'feng003' ) AND ( `status` = 3 ) LIMIT 1
+-- select CURDATE()   //2015-04-08
+-- select CURTIME();  09:18:19
+-- select NOW()  2015-04-08 09:19:04
+-- SELECT SUM(pv_total) FROM `xs_order` WHERE FROM_UNIXTIME(pay_time,'%Y-%m-%d')=CURDATE() AND `status` =1
+-- SELECT COUNT(1) AS tp_count FROM `user` WHERE ( `tjruserid` = 'feng002' ) LIMIT 1
+-- UPDATE `user` SET `rank`=1 WHERE ( `username` = 'feng003' )
+-- SELECT * FROM `xs_order` WHERE id = '389' AND ((u_id = '1' AND status = 2)OR(s_uid = '1' AND status = 2)) LIMIT 1
+
+SELECT * FROM `xs_order` WHERE id = '388' AND ((u_id = '1' AND status = 2)OR(s_uid = '1' AND status = 2)) LIMIT 1
+SELECT SUM(price_total) FROM `xs_order` WHERE FROM_UNIXTIME(order_time,'%Y-%m-%d')=CURDATE()
+UPDATE `user` SET rank = rank+10,nickname= CASE WHEN id =1 THEN 'feng002' WHEN id=2 THEN 'fengzhz' ELSE 'fengz' END where id IN (1,2,3,4);
+UPDATE wallet w LEFT JOIN `user` u ON u.id = w.uid set u.rank =20,w.money =1000 where w.uid =1 ;
+
+----wanwei category
+DELETE from xs_product_category where name != '汽车用品' or name != '时尚礼品';
+
+select * from xs_product_category where name = '汽车用品' or name = '时尚礼品';
+
+select * from xs_product_category where id = 1845 or id = 2485 or FIND_IN_SET('1845',`parent_path`) or FIND_IN_SET('2485',`parent_path`);
+
+delete from xs_product_category where id not in( select a.id FROM (select * from xs_product_category where id = 1845 or id = 2485 or FIND_IN_SET('1845',`parent_path`) or FIND_IN_SET('2485',`parent_path`)) a)
+
+delete from xs_product_category where id not in (select id from xs_product_category where id = 1845 or id = 2485 or FIND_IN_SET('1845',`parent_path`) or FIND_IN_SET('2485',`parent_path`))
 </code></pre>
-<p><a href="%E9%AB%98%E6%80%A7%E8%83%BDMySQL/">高性能MySQL</a></p>
-<pre><code>schema 设计与管理
+<p>2016.05.20</p>
+<p>//一个表的多个字段 实现 添加某个值</p>
+<pre><code>UPDATE `zc_m_product` SET `remain`=remain-1,`zc_total`=zc_total+100.00 WHERE ( `id` = '3' )
 
-    选择优化的数据类型
-        整数，实数，字符串，日期和时间，位压缩，JSON，标识符，特殊数据类型
-    设计中的陷阱
-        太多的列，太多的联接，全能的枚举，变相的枚举，NULL不是虚拟值
-    schema管理
-
-创建高性能索引
-
-    索引简介
-    索引策略
-        前缀索引和索引的选择性，
-        多列索引，
-        选择合适的索引列顺序，
-        聚簇索引，
-        覆盖索引，
-        使用索引扫描来做排序，冗余和重复索引，未使用的索引
-    维护索引和表
-
-查询性能优化
-
-    慢查询基础 优化数据访问
-        是否向数据库请求了不需要的数据
-        MySql是否在扫描额外的记录
-    重构查询的方式
-        一个复杂查询还是多个简单查询
-        切分查询
-        分解联接查询        
-    查询执行的基础
-        MySql的客户端/服务器通信协议
-        查询状态
-        查询优化处理
-        查询执行引擎
-        将结果返回给客户端        
-    MYSQL查询优化器的局限性
-        UNION的限制
-        等值传递
-        并行执行
-        在同一个表中查询和更新
-    优化特定类型的查询
-        优化COUNT()
-        优化联接查询
-        使用 where rollup 优化 group by
-        优化 limit 和 offset 子句
-        优化 sql_calc_found_rows
-        优化 union查询
-</code></pre>
-<p><a href="MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83/">MySQL数据库设计规范</a></p>
-<p><a href="MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/">MySQL数据库设计</a></p>
-<p><a href="MySQL%E5%8F%82%E8%80%83%E5%9C%B0%E5%9D%80/">MySQL参考地址</a></p>
-<p><a href="mysqldump/">mysqldump</a></p>
-<pre><code>mysqldump -uroot -p'xxx' -B --all-database &gt; /home/zhang/bak/database_$(date +%F).sql
-mysqldump -uroot -p'xxx' -B gitea &gt; /home/zhang/bak/gitea_$(date +%F).sql
+$price_data = array();
+$price_data['remain']   = array('exp','remain-'.$order_item_vo['number_total']);
+$price_data['zc_total'] = array('exp','zc_total+'.$order_item_vo['price_total']);
+$res = M('zc_m_product')-&gt;where(array('id'=&gt;$price_info['pid']))-&gt;save($price_data);
 </code></pre>
 
 
@@ -458,10 +438,10 @@ mysqldump -uroot -p'xxx' -B gitea &gt; /home/zhang/bak/gitea_$(date +%F).sql
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.dfff1995.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.dfff1995.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.78eede0e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.78eede0e.min.js"></script>
       
     
   </body>

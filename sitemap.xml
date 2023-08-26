@@ -2,62 +2,237 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>http://feng003.github.io/</loc>
-         <lastmod>2023-08-24</lastmod>
+         <lastmod>2023-08-26</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://feng003.github.io/kali/</loc>
-         <lastmod>2023-08-24</lastmod>
+         <lastmod>2023-08-26</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://feng003.github.io/kali/git/</loc>
-         <lastmod>2023-08-24</lastmod>
+         <lastmod>2023-08-26</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://feng003.github.io/kali/python/</loc>
-         <lastmod>2023-08-24</lastmod>
+         <lastmod>2023-08-26</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://feng003.github.io/kali/ssh/</loc>
-         <lastmod>2023-08-24</lastmod>
+         <lastmod>2023-08-26</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://feng003.github.io/mysql/</loc>
-         <lastmod>2023-08-24</lastmod>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/MySQL%E5%8F%82%E8%80%83%E5%9C%B0%E5%9D%80/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/interview/</loc>
+         <lastmod>2023-08-26</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://feng003.github.io/mysql/leetcode/</loc>
-         <lastmod>2023-08-24</lastmod>
+         <lastmod>2023-08-26</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://feng003.github.io/mysql/mysqldump/</loc>
-         <lastmod>2023-08-24</lastmod>
+         <lastmod>2023-08-26</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://feng003.github.io/mysql/%E9%9D%A2%E8%AF%95%E9%A2%98/</loc>
-         <lastmod>2023-08-24</lastmod>
+         <lastmod>2023-08-26</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://feng003.github.io/mysql/%E9%AB%98%E6%80%A7%E8%83%BDMySQL/</loc>
-         <lastmod>2023-08-24</lastmod>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/SQL/0_0SQL/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/SQL/0_1SQL%E7%AE%80%E4%BB%8B/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/SQL/0_2SQL%E5%AE%89%E8%A3%85/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/SQL/1_1SQL%E6%89%A7%E8%A1%8C/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/SQL/1_2SQL%E6%A3%80%E7%B4%A2%E6%95%B0%E6%8D%AE/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/SQL/1_3SQL%E5%AD%90%E6%9F%A5%E8%AF%A2/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/SQL/1_4SQL%E8%A7%86%E5%9B%BE/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/SQL/1_5SQL%E4%BA%8B%E5%8A%A1/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/SQL/2_1SQL%E8%8C%83%E5%BC%8F/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/SQL/2_2SQL%E7%B4%A2%E5%BC%95/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/SQL/2_3SQL%E9%94%81/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/SQL/2_4SQL%E6%80%A7%E8%83%BD/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/SQL/2_5SQL%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/SQL/2_6SQL%E6%B3%A8%E5%85%A5/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/SQL/3_1SQL%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/SQL/3_2SQL%E6%97%A5%E5%BF%97/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/SQL/4_1SQL%E5%AE%9E%E6%88%98/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/SQL/4_2SQL%E6%80%BB%E7%BB%93/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/SQL/5_1SQL%E8%AF%AD%E5%8F%A5/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/SQL/5_2Error/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/SQL/mongo/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/advanced/explain/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/advanced/indextype/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/advanced/lockmechanism/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/advanced/modifyPwd/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/advanced/myCnf/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/advanced/readme/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/advanced/slow_query/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/advanced/sql/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/advanced/%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/</loc>
+         <lastmod>2023-08-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://feng003.github.io/mysql/advanced/%E5%A4%84%E7%90%86%E6%AD%BB%E9%94%81/</loc>
+         <lastmod>2023-08-26</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://feng003.github.io/python/</loc>
-         <lastmod>2023-08-24</lastmod>
+         <lastmod>2023-08-26</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://feng003.github.io/redis/</loc>
-         <lastmod>2023-08-24</lastmod>
+         <lastmod>2023-08-26</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>

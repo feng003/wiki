@@ -1,0 +1,715 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="http://feng003.github.io/mysql/SQL/2_2SQL%E7%B4%A2%E5%BC%95/">
+      
+      
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.2.3">
+    
+    
+      
+        <title>2_2SQL索引 - 我的文档</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.0e669242.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="我的文档" class="md-header__button md-logo" aria-label="我的文档" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            我的文档
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              2_2SQL索引
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/feng003/wiki/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Github
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="我的文档" class="md-nav__button md-logo" aria-label="我的文档" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    我的文档
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/feng003/wiki/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Github
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    首页
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kali/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kali
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MySql
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../redis/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../python/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Python
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    索引是万能的吗？
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    索引种类
+  </a>
+  
+    <nav class="md-nav" aria-label="索引种类">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    功能逻辑上分为
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    物理实现方式分为
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    按照字段个数进行划分
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-balance-tree" class="md-nav__link">
+    B树 Balance Tree 平衡的多路搜索树
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b" class="md-nav__link">
+    B+树
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hash" class="md-nav__link">
+    统计Hash检索效率
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mysqlhash" class="md-nav__link">
+    Mysql中的Hash索引
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hash-b" class="md-nav__link">
+    Hash索引 和 B+树索引区别
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    创建索引的规律
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    不需要创建索引
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    索引失效
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    数据库中存储结构
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#page" class="md-nav__link">
+    Page
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b_1" class="md-nav__link">
+    从数据页的角度来看，B+树如何进行查询
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+  <h1>2_2SQL索引</h1>
+
+<blockquote>
+<p>索引</p>
+</blockquote>
+<pre><code>利 提升查询效率
+弊 维护索引所需的代价(占用存储空间、降低数据库写操作的性能)
+</code></pre>
+<h4 id="_1">索引是万能的吗？</h4>
+<ul>
+<li>
+<p>[x] 数据行数少的情况下</p>
+</li>
+<li>
+<p>[x] 性别(男女)字段不应该创建索引(区分度)</p>
+</li>
+</ul>
+<h4 id="_2">索引种类</h4>
+<h6 id="_3">功能逻辑上分为</h6>
+<ul>
+<li>
+<p>[x] 普通索引</p>
+</li>
+<li>
+<p>[x] 唯一索引 UNIQUE</p>
+</li>
+<li>
+<p>[x] 主键索引 NOT NULL + UNIQUE</p>
+</li>
+<li>
+<p>[x] 全文索引</p>
+</li>
+</ul>
+<h6 id="_4">物理实现方式分为</h6>
+<ul>
+<li>
+<p>[x] 聚集索引 可以按照主键来排序存储数据</p>
+</li>
+<li>
+<p>[x] 非聚集索引(二级索引或辅助索引)</p>
+<p>在数据库系统会有单独的存储空间存放非聚集索引，这些索引项是按照顺序存储的，但索引项指向的内容是随机存储的。
+也就是说系统会进行两次查找，第一次先找到索引，第二次找到索引对应的位置取出数据行。
+非聚集索引不会把索引指向的内容像聚集索引一样直接放到索引的后面，而是维护单独的索引表（只维护索引，不维护索引指向的数据），为数据检索提供方便。</p>
+<p>二者区别：
+聚集索引的叶子节点存储的是数据记录，非聚集索引的叶子节点存储的数据位置。非聚集索引不会影响数据表的物理存储顺序</p>
+</li>
+<li>
+<p>[x] MyISAM 和 InnoDB都是用B+树来实现索引</p>
+<p>MyISAM的索引与数据是 分开存储的(叫做非聚集索引 Unclustered Index)
+MyISAM的索引叶子 存储指针，主键索引和普通索引无太大区别</p>
+<p>InnoDB 的聚集索引 和 数据行统一存储 (Clustered Index)
+InnoDB 的聚集索引 存储数据行本身，普通索引 存储主键
+InnoDB 一定 有且只有一个 聚集索引</p>
+</li>
+</ul>
+<p><a href="https://mp.weixin.qq.com/s?__biz=MjM5ODYxMDA5OQ==&amp;mid=2651962936&amp;idx=1&amp;sn=2f4a97187134ed584273550104672694&amp;chksm=bd2d0be48a5a82f2e5703e55272f6e3ee60954efd8d08b46232c3e24ec5632691ccc66973553&amp;mpshare=1&amp;scene=1&amp;srcid=&amp;sharer_sharetime=1572050350742&amp;sharer_shareid=1cd8d1b19020a748afda300e4bbbbe41#rd">索引，一文搞定 | 数据库系列</a></p>
+<h6 id="_5">按照字段个数进行划分</h6>
+<ul>
+<li>
+<p>[x] 单一索引</p>
+</li>
+<li>
+<p>[x] 联合索引 最左匹配原则</p>
+<p>1）SQL条件语句中的字段顺序不重要，因为在逻辑查询优化阶段会自动进行 查询重写。
+2）如果我们遇到了范围条件查询，比如&lt;、&lt;=、&gt;、&gt;=、between等。那么范围列后的列就无法使用到索引</p>
+</li>
+</ul>
+<hr />
+<blockquote>
+<p>索引的原理 B+树</p>
+</blockquote>
+<h5 id="b-balance-tree">B树 Balance Tree 平衡的多路搜索树</h5>
+<pre><code>适用于 文件系统和数据库系统中的索引结构
+</code></pre>
+<h5 id="b">B+树</h5>
+<hr />
+<blockquote>
+<p>Hash索引(散列函数) 在键值型（Key-Value）数据库中，Redis 存储的核心就是 Hash 表。</p>
+</blockquote>
+<h5 id="hash">统计Hash检索效率</h5>
+<pre><code>hash 检索数据的算法复杂度为O(1)
+数组 检索数据的算法复杂度为O(n)
+</code></pre>
+<h5 id="mysqlhash">Mysql中的Hash索引</h5>
+<h5 id="hash-b">Hash索引 和 B+树索引区别</h5>
+<pre><code>Hash索引不能进行范围查询，而B+树可以。Hash索引指向的数据是无序的，而B+树的叶子节点是个有序的链表
+
+Hash索引不支持联合索引的最左侧原则，而B+树可以。
+
+Hash索引不支持Order by、Group by、&lt; &gt;  排序，因为Hash索引指向的数据是无序的，无法起到排序优化的作用。无法用Hash索引进行模糊查询。
+</code></pre>
+<hr />
+<blockquote>
+<p>索引的使用原则</p>
+</blockquote>
+<h5 id="_6">创建索引的规律</h5>
+<ul>
+<li>
+<p>[x] 字段的数值有唯一性的限制 比如用户名</p>
+</li>
+<li>
+<p>[x] 频繁作为WHERE 查询条件的字段</p>
+</li>
+<li>
+<p>[x] 需要经常GROUP BY 和 ORDER BY的列</p>
+</li>
+<li>
+<p>[x] UPDATE DELETE 的WHERE 条件列，一般需要创建索引</p>
+</li>
+<li>
+<p>[x] DISTINCT 字段需要创建索引</p>
+</li>
+<li>
+<p>[x] 多表join连接操作时</p>
+<p>连接表的数据尽量不要超过3张，每增加一张表就相当于增加了一次嵌套的循环
+对WHERE 条件创建索引
+对用于连接的字段创建索引，并且该字段在多张表中的类型必须一致</p>
+</li>
+</ul>
+<h5 id="_7">不需要创建索引</h5>
+<pre><code>WHERE条件(包括group by、order by)里用不到的字段不需要创建索引。
+
+表记录太少，比如少于1000个
+
+字段中如果有大量重复数据，比如性别字段
+
+频繁更新的字段不一定要创建索引
+</code></pre>
+<h5 id="_8">索引失效</h5>
+<ul>
+<li>
+<p>[x] 索引进行了表达式计算</p>
+</li>
+<li>
+<p>[x] 对索引使用函数</p>
+</li>
+<li>
+<p>[x] 在where子句中，如果在OR前的条件列进行了索引，而在OR后的条件列没有进行索引，那么索引失效</p>
+</li>
+<li>
+<p>[x] 使用LIKE进行模糊查询的时候，前面不能是 %</p>
+</li>
+<li>
+<p>[x] 索引列尽量设置为 NOT NULL约束</p>
+</li>
+<li>
+<p>[x] 使用联合索引的时候注意最左原则</p>
+</li>
+</ul>
+<hr />
+<pre><code>查找 不经常使用的索引
+SELECT OBJECT_SCHEMA, OBJECT_NAME, INDEX_NAME,COUNT_STAR FROM performance_schema.table_io_waits_summary_by_index_usage
+WHERE INDEX_NAME IS NOT NULL
+AND COUNT_STAR = 0
+AND OBJECT_SCHEMA != 'mysql' AND OBJECT_SCHEMA != 'performance_schema'
+</code></pre>
+<hr />
+<blockquote>
+<p>数据页的角度理解B+</p>
+</blockquote>
+<pre><code>索引信息以及数据记录都保存在文件上，确切说是存储在页结构上
+</code></pre>
+<h5 id="_9">数据库中存储结构</h5>
+<p><img alt="行、页、区、段、表空间的关系" src="BA6D987D717644139910BBA3E379579A" /></p>
+<pre><code>一个表空间包括一个或多个段
+一个段包括了一个或多个区
+一个区(64个连续的页 1M)包括了多个页
+一个页(Innodb 中默认大小是 16Kb)中可以存储多个行记录(Row)
+
+查看Innodb的表空间类型：
+    show variables like 'innodb_file_per_table';
+    innodb_file_per_table=ON，这就意味着每张表都会单独保存为一个.ibd 文件
+</code></pre>
+<h5 id="page">Page</h5>
+<pre><code>常见的有数据页(保存B+树节点)、系统页、Undo页和事务数据页
+
+Mysql的InnoDB存储引擎中，默认页的大小是16Kb
+    show variables like '%innodb_page_size%';
+
+数据库I/O操作的最小单元是页。数据页包括七个部分，分别是：
+文件头(file header  38b)
+页头 (page header 56b)
+最大最小记录 (infimun + supermum 26b)
+用户记录 (user records)
+空闲空间 (free space)
+页目录 (page directory)
+文件尾 (file tailer 8b)
+</code></pre>
+<h5 id="b_1">从数据页的角度来看，B+树如何进行查询</h5>
+<pre><code>一颗B+树按照节点类型可以分成两部分
+叶子节点 B+树最底层的节点，节点的高度为0，存储行记录
+非叶子节点 节点的高度大于0，存储索引键和页面指针，并不存储行记录本身
+</code></pre>
+<ul>
+<li>
+<p>[x] B+树如何进行记录检索的</p>
+</li>
+<li>
+<p>[x] 普通索引和唯一索引在查询效率上有什么不同</p>
+</li>
+</ul>
+<hr />
+<blockquote>
+<p>磁盘I/O角度理解SQL查询的成本</p>
+</blockquote>
+<pre><code>SELECT comment_id, comment_text, user_id FROM product_comment where user_id BETWEEN 100000 AND 200000
+</code></pre>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.dfff1995.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.78eede0e.min.js"></script>
+      
+    
+  </body>
+</html>
