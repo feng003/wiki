@@ -8,6 +8,8 @@
     // 窗口函数
     SELECT score, ROW_NUMBER() OVER(order by score desc) AS 'rank' from Scores;
 
+    SELECT score, ROW_NUMBER() OVER(order by score desc) AS 'rank' from Scores;
+
     SELECT S.score, DENSE_RANK() OVER (PARTITION BY id ORDER BY S.score DESC ) AS 'rank' FROM Scores S;
 
     // 字符串操作函数
@@ -17,8 +19,13 @@
     SELECT user_id, CONCAT(UPPER(substring(name,1,1)), LOWER(substring(name,2)) ) as name 
     from Users order by user_id
 
+    SELECT user_id, CONCAT(UPPER(substring(name,1,1)), LOWER(substring(name,2)) ) as name 
+    from Users order by user_id
+
     // 模糊匹配 邮箱 (^[a-zA-Z][a-zA-Z0-9_.-]*\\@leetcode\\.com$)
     SELECT * FROM Patients WHERE conditions REGEXP '\\bDIAB1.*';
+    SELECT * from Patients where conditions like 'DIAB1%' or conditions like '% DIAB1%';
+    SELECT * from Users where mail REGEXP '^[a-zA-Z][a-zA-Z0-9_.-]*\\@leetcode\\.com$'
     SELECT * from Patients where conditions like 'DIAB1%' or conditions like '% DIAB1%';
     SELECT * from Users where mail REGEXP '^[a-zA-Z][a-zA-Z0-9_.-]*\\@leetcode\\.com$'
 
@@ -26,7 +33,11 @@
     SELECT sell_date, count( distinct(product) ) as num_sold, 
     GROUP_CONCAT(DISTINCT product ORDER BY product SEPARATOR ',') as products 
     from Activities group by sell_date ORDER BY  sell_date ASC;
+    SELECT sell_date, count( distinct(product) ) as num_sold, 
+    GROUP_CONCAT(DISTINCT product ORDER BY product SEPARATOR ',') as products 
+    from Activities group by sell_date ORDER BY  sell_date ASC;
 
+---
 ---
 
 ### 180. 连续出现的数字
@@ -50,6 +61,7 @@
 
     ### 答案 
     ### 判断是否连续，若考虑id不连续的情况，光凭题目中的id就不够用了，我们可利用row_num函数按照id 升序对其进行连续排序，
+    
     row_number() over(order by id) 记为rank1
     ### 统计num的重复数据，自然需要对num进行分组统计，同样对其进行排名 row_number() over(partition by Num order by Id) 记为rank2
 
@@ -81,6 +93,9 @@
     SELECT round( ((SELECT count(player_id) from 
     (SELECT player_id, datediff(event_date, min(event_date) over(partition by player_id)) as diff from activity ) as tmp 
     where diff = 1 ) / (SELECT count(distinct player_id) from activity)) ,2) as fraction;
+    SELECT round( ((SELECT count(player_id) from 
+    (SELECT player_id, datediff(event_date, min(event_date) over(partition by player_id)) as diff from activity ) as tmp 
+    where diff = 1 ) / (SELECT count(distinct player_id) from activity)) ,2) as fraction;
 
 
 ### 585. 2016年的投资
@@ -106,6 +121,9 @@
     SELECT round(sum(tiv_2016),2) as tiv_2016 from Insurance 
     where tiv_2015 in ( SELECT tiv_2015 from Insurance group by tiv_2015 having count(1) > 1 ) 
     and concat(lat, lon) in (SELECT concat(lat, lon) from Insurance group by lat,lon having count(1) = 1 )
+    SELECT round(sum(tiv_2016),2) as tiv_2016 from Insurance 
+    where tiv_2015 in ( SELECT tiv_2015 from Insurance group by tiv_2015 having count(1) > 1 ) 
+    and concat(lat, lon) in (SELECT concat(lat, lon) from Insurance group by lat,lon having count(1) = 1 )
 
 ### 1164. 指定日期的产品价格 全集 JOIN 子集 缺失的值为null
 
@@ -123,10 +141,13 @@
 
     ### 思路1
     SELECT product_id,new_price as price from Products where (product_id,change_date) in (SELECT product_id, max(change_date) from Products where change_date <= "2019-08-16" group by product_id)
+    SELECT product_id,new_price as price from Products where (product_id,change_date) in (SELECT product_id, max(change_date) from Products where change_date <= "2019-08-16" group by product_id)
     union
+    (SELECT product_id, if(2>1, 10, 10) as price from Products where change_date >'2019-08-16' group by product_id having count(1) < 2 )
     (SELECT product_id, if(2>1, 10, 10) as price from Products where change_date >'2019-08-16' group by product_id having count(1) < 2 )
 
     ### 思路2
+    SELECT product_id, price from ( SELECT product_id, new_price as price, dense_rank() over(partition by product_id order by change_date desc) as rnk from Products where change_date <= '2019-08-16' ) t where rnk = 1
     SELECT product_id, price from ( SELECT product_id, new_price as price, dense_rank() over(partition by product_id order by change_date desc) as rnk from Products where change_date <= '2019-08-16' ) t where rnk = 1
 
     ### 答案1 全集 JOIN 子集 缺失的值为null
@@ -396,11 +417,11 @@
     SELECT if( id % 2 = 0, id-1, if( id = (SELECT max(id) from Seat ), id, id+1) ) as id, student from Seat order by id;
 
     ### 答案
-    SELECT a.id as id,ifnull(b.student,a.student) as student from Seat as a left JOIN 
-    ( SELECT * from Seat where mod(id,2) = 0 ) as b on (a.id+1) = b.id where mod(a.id,2) = 1
+    select a.id as id,ifnull(b.student,a.student) as student from Seat as a left join 
+    ( select * from Seat where mod(id,2) = 0 ) as b on (a.id+1) = b.id where mod(a.id,2) = 1
     union
-    SELECT c.id as id,d.student as student from Seat as c left JOIN 
-    ( SELECT * from Seat where mod(id,2) = 1 ) as d on (c.id-1) = d.id where mod(c.id,2) = 0
+    select c.id as id,d.student as student from Seat as c left join 
+    ( select * from Seat where mod(id,2) = 1 ) as d on (c.id-1) = d.id where mod(c.id,2) = 0
     order by id asc;
 
 
@@ -415,7 +436,7 @@
     ## 所有售出日期都在这个时间内 = 在这个时间内售出的商品数量等于总商品数量
 
     ###答案  count( sale_date between '2019-01-01' and '2019-03-31' or null ) 
-    SELECT p.product_id, p.product_name from Sales as s left JOIN Product as p on p.product_id=s.product_id 
+    select p.product_id, p.product_name from Sales as s left join Product as p on p.product_id=s.product_id 
     group by product_id
     having count( sale_date between '2019-01-01' and '2019-03-31' or null ) = count(*)
     <!-- having SUM(s.sale_date BETWEEN '2019-01-01' AND '2019-03-31') = COUNT(*) -->
