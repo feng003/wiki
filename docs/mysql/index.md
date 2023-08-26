@@ -70,6 +70,12 @@
             优化 limit 和 offset 子句
             优化 sql_calc_found_rows
             优化 union查询
+    
+[MySQL数据库设计规范](./MySQL数据库设计规范.md)
+
+[MySQL数据库设计](./MySQL数据库设计.md)
+
+[MySQL参考地址](./MySQL参考地址.md)
 
 [mysqldump](./mysqldump.md)
 
