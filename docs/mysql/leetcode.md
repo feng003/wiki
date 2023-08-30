@@ -52,6 +52,11 @@
     ### 思路2 窗口函数
     SELECT *,id - row_number() over(order by id) as rk FROM stadium  where people >= 100
 
+    with t1 as (
+    select *,id - row_number() over(order by id) as rk from stadium  where people >= 100
+    )
+    select id,visit_date, people from t1 where rk in ( select rk from t1 group by rk having count(rk) >= 3 )
+
 ### 180. 连续出现的数字
 
     ### 按照ID升序排序下，统计num中连续重复出现3次及以上的数字
