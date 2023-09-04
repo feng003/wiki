@@ -376,7 +376,6 @@
     JOIN  Department ON Employee.DepartmentId = Department.Id 
     WHERE (Employee.DepartmentId , Salary) IN (SELECT DepartmentId, MAX(Salary) FROM Employee GROUP BY DepartmentId )
 
-
 ### 197. 上升的温度 datediff() / TIMESTAMPDIFF()
 
     Weather = 
@@ -407,6 +406,19 @@
 
 ### 626. 换座位  LEAD(), LAG() / IF()
 
+    ### 交换每两个连续的学生的座位号。如果学生的数量是奇数，则最后一个学生的id不交换。
+    ### LEAD(column_name, offset, default_value) OVER (PARTITION BY partition_expression ORDER BY sort_expression)  获取当前行后面的指定行数的值
+    ### LAG(column_name, offset, default_value) OVER (PARTITION BY partition_expression ORDER BY sort_expression)  获取当前行前面的指定行数的值
+
+    考察SQL语句关键字执行的顺序: FROM > WHERE > GROUP BY > HAVING > SELECT > ORDER BY
+    从执行顺序优先级可以看出，SELECT是倒数第二个执行的，ORDER BY在倒数第一个。所以我们可以对表数据执行修改然后通过排序得出结果。
+
+    从需求分析中可以看出，其实就是对id进行修改，如果id是奇数就+1，偶数则-1(WHEN MOD(id,2) != 0 AND c.end_id != id THEN id + 1 ELSE id - 1)
+
+    还要判断是否数量是否是奇数，如果是则最后一个不改(WHEN MOD(id,2) != 0 AND c.end_id = id THEN id)
+    
+    判断数量我是通过新表来查询的( (SELECT COUNT(*) AS end_id FROM Seat) AS c)
+
     Seat =
     | id | student |
     | -- | ------- |
@@ -415,10 +427,6 @@
     | 3  | Emerson |
     | 4  | Green   |
     | 5  | Jeames  |
-    ### 交换每两个连续的学生的座位号。如果学生的数量是奇数，则最后一个学生的id不交换。
-
-    ### LEAD(column_name, offset, default_value) OVER (PARTITION BY partition_expression ORDER BY sort_expression)  获取当前行后面的指定行数的值
-    ### LAG(column_name, offset, default_value) OVER (PARTITION BY partition_expression ORDER BY sort_expression)  获取当前行前面的指定行数的值
 
     SELECT id, IF(id & 1, LEAD(student,1, student) OVER(), LAG(student, 1) OVER() ) AS student
     FROM Seat
@@ -433,7 +441,6 @@
     SELECT c.id as id,d.student as student FROM Seat as c left join 
     ( SELECT * FROM Seat where mod(id,2) = 1 ) as d on (c.id-1) = d.id where mod(c.id,2) = 0
     order by id asc;
-
 
 ### 1084. 销售分析III count( sale_date between '2019-01-01' and '2019-03-31' or null ) 
 
