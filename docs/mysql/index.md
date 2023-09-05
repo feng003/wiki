@@ -9,6 +9,16 @@
 
 [面试整理](./interview.md)
 
+[高性能MySQL](./高性能MySQL.md)
+
+    schema 设计与管理
+
+    创建高性能索引
+
+    查询性能优化
+
+[mysqldump](./mysqldump.md)
+
 [leetcode](./leetcode.md)
 
     601. 体育馆的人流量
@@ -35,12 +45,3 @@
     [1321. 餐馆营业额变化增长](https://leetcode.cn/problems/restaurant-growth/)
     [1934. 确认率 AVG() IFNULL ](https://leetcode.cn/problems/confirmation-rate/)  
 
-[高性能MySQL](./高性能MySQL.md)
-
-    schema 设计与管理
-
-    创建高性能索引
-
-    查询性能优化
-
-[mysqldump](./mysqldump.md)
