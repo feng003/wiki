@@ -272,20 +272,29 @@
     | 1           | Jhon    | 2019-01-10 | 130    |
     | 3           | Jade    | 2019-01-10 | 150    |
 
-    ### 答案
+    ### 答案1
     SELECT distinct visited_on FROM Customer;
     SELECT visited_on,sum(amount) as amount FROM Customer group by visited_on;
+    on (b.visited_on >= date_sub(a.visited_on,interval 6 day)) and (b.visited_on <= a.visited_on);
+    group by a.visited_on having date_sub(a.visited_on,interval 6 day) >= (SELECT min(visited_on) FROM Customer);
 
-    SELECT a.visited_on as visited_on, sum(b.amount) as amount, round(sum(b.amount)/7,2) as average_amount FROM 
-    (SELECT distinct visited_on FROM Customer ) as a JOIN ( SELECT visited_on,sum(amount) as amount FROM Customer group by visited_on ) as b  
+    SELECT a.visited_on as visited_on, sum(b.amount) as amount, round(sum(b.amount)/7,2) as average_amount 
+    FROM (SELECT distinct visited_on FROM Customer ) as a 
+    JOIN ( SELECT visited_on,sum(amount) as amount FROM Customer group by visited_on ) as b  
     on (b.visited_on >= date_sub(a.visited_on,interval 6 day)) and (b.visited_on <= a.visited_on)
     group by a.visited_on having date_sub(a.visited_on,interval 6 day) >= (SELECT min(visited_on) FROM Customer) 
     order by a.visited_on;
 
-    ### 答案
-    SELECT DISTINCT visited_on, sum_amount AS amount, ROUND(sum_amount/7, 2) AS average_amount FROM 
-    (SELECT visited_on,SUM(amount) OVER (ORDER BY visited_on RANGE BETWEEN INTERVAL '6' DAY PRECEDING AND CURRENT ROW) AS sum_amount FROM ( SELECT visited_on, SUM(amount) AS amount FROM Customer GROUP BY visited_on ) a ) b 
+    ### 答案2
+    SELECT DISTINCT visited_on, sum_amount AS amount, ROUND(sum_amount/7, 2) AS average_amount 
+    FROM (SELECT visited_on,SUM(amount) OVER (ORDER BY visited_on RANGE BETWEEN INTERVAL '6' DAY PRECEDING AND CURRENT ROW) AS sum_amount FROM ( SELECT visited_on, SUM(amount) AS amount FROM Customer GROUP BY visited_on ) a ) b 
     WHERE DATEDIFF(visited_on, (SELECT MIN(visited_on) FROM Customer)) >= 6;
+
+    ### 答案3
+    select visited_on, sum_amount as amount, round(sum_amount/7,2) as average_amount from 
+    ( select visited_on, sum(amount) over(order by to_days(visited_on) range 6 preceding ) as sum_amount from
+    ( select visited_on, sum(amount) as amount from Customer group by visited_on ) res ) r 
+    where datediff(visited_on, (select min(visited_on) from Customer) ) >= 6
 
 ### 1934. 确认率  AVG() / if()
 

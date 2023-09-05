@@ -5,6 +5,10 @@
 
 [MySQL参考地址](./MySQL参考地址.md)
 
+[窗口函数](./窗口函数.md)
+
+[面试整理](./interview.md)
+
 [leetcode](./leetcode.md)
 
     601. 体育馆的人流量
@@ -40,6 +44,3 @@
     查询性能优化
 
 [mysqldump](./mysqldump.md)
-
-    mysqldump -uroot -p'xxx' -B --all-database > /home/zhang/bak/database_$(date +%F).sql
-    mysqldump -uroot -p'xxx' -B gitea > /home/zhang/bak/gitea_$(date +%F).sql
