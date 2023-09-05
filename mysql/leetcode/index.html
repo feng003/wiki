@@ -761,20 +761,29 @@ Customer =
 | 1           | Jhon    | 2019-01-10 | 130    |
 | 3           | Jade    | 2019-01-10 | 150    |
 
-### 答案
+### 答案1
 SELECT distinct visited_on FROM Customer;
 SELECT visited_on,sum(amount) as amount FROM Customer group by visited_on;
+on (b.visited_on &gt;= date_sub(a.visited_on,interval 6 day)) and (b.visited_on &lt;= a.visited_on);
+group by a.visited_on having date_sub(a.visited_on,interval 6 day) &gt;= (SELECT min(visited_on) FROM Customer);
 
-SELECT a.visited_on as visited_on, sum(b.amount) as amount, round(sum(b.amount)/7,2) as average_amount FROM 
-(SELECT distinct visited_on FROM Customer ) as a JOIN ( SELECT visited_on,sum(amount) as amount FROM Customer group by visited_on ) as b  
+SELECT a.visited_on as visited_on, sum(b.amount) as amount, round(sum(b.amount)/7,2) as average_amount 
+FROM (SELECT distinct visited_on FROM Customer ) as a 
+JOIN ( SELECT visited_on,sum(amount) as amount FROM Customer group by visited_on ) as b  
 on (b.visited_on &gt;= date_sub(a.visited_on,interval 6 day)) and (b.visited_on &lt;= a.visited_on)
 group by a.visited_on having date_sub(a.visited_on,interval 6 day) &gt;= (SELECT min(visited_on) FROM Customer) 
 order by a.visited_on;
 
-### 答案
-SELECT DISTINCT visited_on, sum_amount AS amount, ROUND(sum_amount/7, 2) AS average_amount FROM 
-(SELECT visited_on,SUM(amount) OVER (ORDER BY visited_on RANGE BETWEEN INTERVAL '6' DAY PRECEDING AND CURRENT ROW) AS sum_amount FROM ( SELECT visited_on, SUM(amount) AS amount FROM Customer GROUP BY visited_on ) a ) b 
+### 答案2
+SELECT DISTINCT visited_on, sum_amount AS amount, ROUND(sum_amount/7, 2) AS average_amount 
+FROM (SELECT visited_on,SUM(amount) OVER (ORDER BY visited_on RANGE BETWEEN INTERVAL '6' DAY PRECEDING AND CURRENT ROW) AS sum_amount FROM ( SELECT visited_on, SUM(amount) AS amount FROM Customer GROUP BY visited_on ) a ) b 
 WHERE DATEDIFF(visited_on, (SELECT MIN(visited_on) FROM Customer)) &gt;= 6;
+
+### 答案3
+select visited_on, sum_amount as amount, round(sum_amount/7,2) as average_amount from 
+( select visited_on, sum(amount) over(order by to_days(visited_on) range 6 preceding ) as sum_amount from
+( select visited_on, sum(amount) as amount from Customer group by visited_on ) res ) r 
+where datediff(visited_on, (select min(visited_on) from Customer) ) &gt;= 6
 </code></pre>
 <h3 id="1934-avg-if">1934. 确认率  AVG() / if()</h3>
 <pre><code>### 确认率 是 'confirmed' 消息的数量除以请求的确认消息的总数
@@ -888,7 +897,20 @@ WHERE TIMESTAMPDIFF(DAY, w2.RecordDate, w1.RecordDate) = 1 AND w1.Temperature &g
 SELECT x,y,z, (case when x+y &gt;z and x+z &gt;y and y+z &gt;x THEN 'Yes' ELSE 'No' END) as 'triangle' FROM triangle;
 </code></pre>
 <h3 id="626-lead-lag-if">626. 换座位  LEAD(), LAG() / IF()</h3>
-<pre><code>Seat =
+<pre><code>### 交换每两个连续的学生的座位号。如果学生的数量是奇数，则最后一个学生的id不交换。
+### LEAD(column_name, offset, default_value) OVER (PARTITION BY partition_expression ORDER BY sort_expression)  获取当前行后面的指定行数的值
+### LAG(column_name, offset, default_value) OVER (PARTITION BY partition_expression ORDER BY sort_expression)  获取当前行前面的指定行数的值
+
+考察SQL语句关键字执行的顺序: FROM &gt; WHERE &gt; GROUP BY &gt; HAVING &gt; SELECT &gt; ORDER BY
+从执行顺序优先级可以看出，SELECT是倒数第二个执行的，ORDER BY在倒数第一个。所以我们可以对表数据执行修改然后通过排序得出结果。
+
+从需求分析中可以看出，其实就是对id进行修改，如果id是奇数就+1，偶数则-1(WHEN MOD(id,2) != 0 AND c.end_id != id THEN id + 1 ELSE id - 1)
+
+还要判断是否数量是否是奇数，如果是则最后一个不改(WHEN MOD(id,2) != 0 AND c.end_id = id THEN id)
+
+判断数量我是通过新表来查询的( (SELECT COUNT(*) AS end_id FROM Seat) AS c)
+
+Seat =
 | id | student |
 | -- | ------- |
 | 1  | Abbot   |
@@ -896,10 +918,6 @@ SELECT x,y,z, (case when x+y &gt;z and x+z &gt;y and y+z &gt;x THEN 'Yes' ELSE '
 | 3  | Emerson |
 | 4  | Green   |
 | 5  | Jeames  |
-### 交换每两个连续的学生的座位号。如果学生的数量是奇数，则最后一个学生的id不交换。
-
-### LEAD(column_name, offset, default_value) OVER (PARTITION BY partition_expression ORDER BY sort_expression)  获取当前行后面的指定行数的值
-### LAG(column_name, offset, default_value) OVER (PARTITION BY partition_expression ORDER BY sort_expression)  获取当前行前面的指定行数的值
 
 SELECT id, IF(id &amp; 1, LEAD(student,1, student) OVER(), LAG(student, 1) OVER() ) AS student
 FROM Seat

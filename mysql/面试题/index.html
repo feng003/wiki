@@ -1425,13 +1425,6 @@ Statement：每一条会修改数据的sql都会记录在binlog中。
 缺点:所有的执行的语句当记录到日志中的时候，都将以每行记录的修改来记录，这样可能会产生大量的日志内容,比 如一条update语句，修改多条记录，则binlog中每一条修改都会有记录，这样造成binlog日志量会很大，特别是当执行alter table之类的语句的时候，由于表结构修改，每条记录都发生改变，那么该表每一条记录都会记录到日志中。
 3.Mixedlevel: 是以上两种level的混合使用，一般的语句修改使用statment格式保存binlog，如一些函数，statement无法完成主从复制的操作，则 采用row格式保存binlog,MySQL会根据执行的每一条具体的sql语句来区分对待记录的日志形式，也就是在Statement和Row之间选择 一种.新版本的MySQL中队row level模式也被做了优化，并不是所有的修改都会以row level来记录，像遇到表结构变更的时候就会以statement模式来记录。至于update或者delete等修改数据的语句，还是会记录所有行的 变更。</p>
 <blockquote>
-<p>问了下MySQL数据库cpu飙升到500%的话他怎么处理？</p>
-</blockquote>
-<p>(1)、没有经验的，可以不问；
-(2)、有经验的，问他们的处理思路。
-列出所有进程  show processlist  观察所有进程  多秒没有状态变化的(干掉)
-查看超时日志或者错误日志 (做了几年开发,一般会是查询以及大批量的插入会导致cpu与i/o上涨,,,,当然不排除网络状态突然断了,,导致一个请求服务器只接受到一半，比如where子句或分页子句没有发送,,当然的一次被坑经历)</p>
-<blockquote>
 <p>sql优化</p>
 </blockquote>
 <p>(1)、explain出来的各种item的意义；
@@ -1455,8 +1448,8 @@ Extra
 <p>备份计划，mysqldump以及xtranbackup的实现原理</p>
 </blockquote>
 <p>(1)、备份计划；
-这里每个公司都不一样，您别说那种1小时1全备什么的就行
-(2)、备份恢复时间；
+这里每个公司都不一样，您别说那种1小时1全备什么的就行</p>
+<p>(2)、备份恢复时间；
 这里跟机器，尤其是硬盘的速率有关系，以下列举几个仅供参考
 20G的2分钟（mysqldump）
 80G的30分钟(mysqldump)
@@ -1466,31 +1459,6 @@ Extra
 逻辑导入时间一般是备份时间的5倍以上</p>
 <p>(3)、xtrabackup实现原理
 在InnoDB内部会维护一个redo日志文件，我们也可以叫做事务日志文件。事务日志会存储每一个InnoDB表数据的记录修改。当InnoDB启动时，InnoDB会检查数据文件和事务日志，并执行两个步骤：它应用（前滚）已经提交的事务日志到数据文件，并将修改过但没有提交的数据进行回滚操作。</p>
-<blockquote>
-<p>mysqldump中备份出来的sql，如果我想sql文件中，一行只有一个insert....value()的话，怎么办？如果备份需要带上master的复制点信息怎么办？</p>
-</blockquote>
-<pre><code>--skip-extended-insert
-[root@helei-zhuanshu ~]# mysqldump -uroot -p helei --skip-extended-insert
-Enter password:
-  KEY `idx_c1` (`c1`),
-  KEY `idx_c2` (`c2`)
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `helei`
---
-
-LOCK TABLES `helei` WRITE;
-/*!40000 ALTER TABLE `helei` DISABLE KEYS */;
-INSERT INTO `helei` VALUES (1,32,37,38,'2016-10-18 06:19:24','susususususususususususu');
-INSERT INTO `helei` VALUES (2,37,46,21,'2016-10-18 06:19:24','susususususu');
-INSERT INTO `helei` VALUES (3,21,5,14,'2016-10-18 06:19:24','susu');
-</code></pre>
-<blockquote>
-<p>500台db，在最快时间之内重启</p>
-</blockquote>
-<p>puppet，dsh</p>
 <blockquote>
 <p>innodb的读写参数优化</p>
 </blockquote>
@@ -1510,26 +1478,6 @@ query cache/query_cache_type
 第二个：我们“行骗”的时候，比如说我们竞标的时候压测，把query cache打开，还是能收到qps激增的效果，当然前提示前端的连接池什么的都配置一样。大部分情况下如果写入的居多，访问量并不多，那么就不要打开，例如社交网站的，10%的人产生内容，其余的90%都在消费，打开还是效果很好的，但是你如果是qq消息，或者聊天，那就很要命。
 第三个：小网站或者没有高并发的无所谓，高并发下，会看到 很多 qcache 锁 等待，所以一般高并发下，不建议打开query cache</p>
 <blockquote>
-<p>你是如何监控你们的数据库的？你们的慢日志都是怎么查询的？</p>
-</blockquote>
-<p>监控的工具有很多，例如zabbix，lepus，我这里用的是lepus</p>
-<blockquote>
-<p>你是否做过主从一致性校验，如果有，怎么做的，如果没有，你打算怎么做？</p>
-</blockquote>
-<p>主从一致性校验有多种工具 例如checksum、mysqldiff、pt-table-checksum等</p>
-<blockquote>
-<p>你们数据库是否支持emoji表情，如果不支持，如何操作？</p>
-</blockquote>
-<p>如果是utf8字符集的话，需要升级至utf8_mb4方可支持</p>
-<blockquote>
-<p>你是如何维护数据库的数据字典的？</p>
-</blockquote>
-<p>这个大家维护的方法都不同，我一般是直接在生产库进行注释，利用工具导出成excel方便流通。</p>
-<blockquote>
-<p>你们是否有开发规范，如果有，如何执行的</p>
-</blockquote>
-<p>有，开发规范网上有很多了，可以自己看看总结下</p>
-<blockquote>
 <p>表中有大字段X(例如：text类型)，且字段X不会经常更新，以读为为主，请问</p>
 </blockquote>
 <p>(1)、您是选择拆成子表，还是继续放一起；
@@ -1543,12 +1491,7 @@ query cache/query_cache_type
 <p>答：InnoDB是基于索引来完成行锁
 例: select * from tab_with_index where id = 1 for update;
 for update 可以根据条件来完成行锁锁定,并且 id 是有索引键的列,
-如果 id 不是索引键那么InnoDB将完成表锁,,并发将无从谈起
-.</p>
-<blockquote>
-<p>如何从mysqldump产生的全库备份中只恢复某一个库、某一张表？</p>
-</blockquote>
-<p>答案见：http://suifu.blog.51cto.com/9167728/1830651</p>
+如果 id 不是索引键那么InnoDB将完成表锁,,并发将无从谈起</p>
 <blockquote>
 <p>开放性问题：据说是腾讯的</p>
 </blockquote>
