@@ -1,6 +1,6 @@
 # Welcome to MkDocs
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+For mkdocs visit [mkdocs.org](https://www.mkdocs.org).
 
 For full documentation visit [feng003.github.io](https://feng003.github.io).
 
