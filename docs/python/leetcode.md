@@ -5,6 +5,7 @@
     滑动窗口
     前缀和
     哈希表
+    二叉树
 
 ### 605. 种花问题
 
@@ -162,3 +163,76 @@
                     tmp.append(num)
                 
             return tmp
+
+### 236. 二叉树的最近公共祖先
+
+    “对于有根树 T 的两个节点 p、q，最近公共祖先表示为一个节点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”
+    输入：root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 4
+    输出：5
+
+    class Solution:
+        def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+            if root in (None, p, q):
+                return root
+            left = self.lowestCommonAncestor(root.left, p, q)
+            right = self.lowestCommonAncestor(root.right, p, q)
+            if left and right:
+                return root
+            return left if left else right
+
+### 1372. 二叉树中的最长交错路径
+
+    给你一棵以 root 为根的二叉树，二叉树中的交错路径定义如下：
+
+    选择二叉树中 任意 节点和一个方向（左或者右）。
+    如果前进方向为右，那么移动到当前节点的的右子节点，否则移动到它的左子节点。
+    改变前进方向：左变右或者右变左。
+
+    重复第二步和第三步，直到你在树中无法继续移动。
+
+    交错路径的长度定义为：访问过的节点数目 - 1（单个节点的路径长度为 0 ）。
+
+    请你返回给定树中最长 交错路径 的长度。
+
+    输入：root = [1,1,1,null,1,null,null,1,1,null,1]
+    输出：4
+
+    # Definition for a binary tree node.
+    # class TreeNode:
+    #     def __init__(self, val=0, left=None, right=None):
+    #         self.val = val
+    #         self.left = left
+    #         self.right = right
+
+    class Solution:
+        def longestZigZag1(self, root: Optional[TreeNode]) -> int:
+            # // reach root, the longest path from left or right
+            quene = deque([(root, 0, 0)])
+            num = 0
+            while quene:
+                # print(quene)
+                node, l, r = quene.popleft()
+                num = max(num, l, r)
+                if node.right:
+                    quene.append([node.right, r+1, 0])
+                if node.left:
+                    quene.append([node.left, 0, l+1])
+            return num
+        
+        def longestZigZag2(self, root: Optional[TreeNode]) -> int:
+            num = 0
+            def dfs(root, flag, sum):
+                if root == None:
+                    return 0
+                nonlocal num
+                num = max(num, sum)
+                if flag:
+                    dfs(root.left, True, 1)
+                    dfs(root.right, False, sum+1)
+                else:
+                    dfs(root.left, True, sum+1)
+                    dfs(root.right, False, 1)
+            dfs(root, True, 0)
+            return num
+ 
+
